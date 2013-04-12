@@ -2,7 +2,7 @@
 #define _ENVIRONMENT_H_
 
 
-#include <osgbCollision/GLDebugDrawer.h>
+
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include <iostream>

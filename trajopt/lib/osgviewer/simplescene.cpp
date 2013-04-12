@@ -11,15 +11,14 @@ Scene::Scene() {
     env.reset(new Environment(osg));
 
     // default callbacks
-    addVoidKeyCallback('h', boost::bind(&Scene::help, this),            "display help info");
+    addVoidKeyCallback('h', boost::bind(&Scene::help, this), "display help info");
     addVoidKeyCallback(osgGA::GUIEventAdapter::KEY_Escape, boost::bind(exit, 0), "(escape) exit");
 
     drawingOn = false;
 }
 
 void Scene::startViewer() {
-    drawingOn = syncTime = true;
-
+    drawingOn = true;
 
     viewer.setUpViewInWindow(0, 0, windowWidth, windowHeight);
     manip = new EventHandler(*this);
@@ -56,11 +55,6 @@ void Scene::help() {
 }
 
 void Scene::step() {
-    static float startTime=viewer.getFrameStamp()->getSimulationTime(), endTime;
-
-    if (syncTime && drawingOn)
-        endTime = viewer.getFrameStamp()->getSimulationTime();
-
     // run pre-step callbacks
     for (int i = 0; i < prestepCallbacks.size(); ++i)
         prestepCallbacks[i]();
@@ -70,8 +64,13 @@ void Scene::step() {
     // run pre-draw callbacks
     for (int i = 0; i < predrawCallbacks.size(); ++i)
         predrawCallbacks[i]();
-
     draw();
+}
+
+void Scene::run() {
+	startViewer();
+	while (drawingOn && !viewer.done())
+		step();
 }
 
 void Scene::draw() {

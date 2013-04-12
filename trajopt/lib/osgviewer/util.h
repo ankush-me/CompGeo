@@ -39,11 +39,17 @@ namespace util {
   }
 
   inline bool isfinite(const Eigen::Matrix3f &m) {
-      return isfinite(m.col(0)) && isfinite(m.col(1)) && isfinite(m.col(2));
+	  Eigen::Vector3f x = m.col(0);
+	  Eigen::Vector3f y = m.col(1);
+	  Eigen::Vector3f z = m.col(2);
+
+      return isfinite(x) && isfinite(y) && isfinite(y);
   }
 
   inline bool isfinite(const Eigen::Affine3f &t) {
-      return isfinite(t.linear()) && isfinite(t.translation());
+	  Eigen::Matrix3f rot   = t.linear();
+	  Eigen::Vector3f trans = t.translation();
+      return isfinite(rot) && isfinite(trans);
   }
 
   ///////////////// PLOTTING FOR DEBUGGING ////////////////////////////
@@ -59,7 +65,7 @@ namespace util {
   void drawSpheres(Eigen::Vector3f point, Eigen::Vector3f color, float alpha, float radius, Environment::Ptr env);
   void drawLines(vector<Eigen::Vector3f> points0, vector<Eigen::Vector3f> points1, Eigen::Vector3f color, float alpha, Environment::Ptr env);
   void drawPoly(vector<Eigen::Vector3f> points, Eigen::Vector3f color, float alpha, Environment::Ptr env);
-  void drawAxes(Eigen::Affine3d transform, float size, Environment::Ptr env);
+  void drawAxes(Eigen::Affine3f transform, float size, Environment::Ptr env);
 }
 
 #endif // __UTIL_H__

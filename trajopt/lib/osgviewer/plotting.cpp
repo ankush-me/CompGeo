@@ -76,7 +76,7 @@ void PlotPoints::forceTransparency(float a) {
 void PlotPoints::setPoints(const vector<Eigen::Vector3f>& pts, const vector<Eigen::Vector4f>& cols) {
   setPoints(toVec3Array(pts), toVec4Array(cols));
 }
-void PlotPoints::setPoints(const vector<btVector3>& pts) {
+void PlotPoints::setPoints(const vector<Eigen::Vector3f>& pts) {
   setPoints(toVec3Array(pts));
 }
 
@@ -103,11 +103,11 @@ PlotLines::PlotLines(float width) {
   m_geode->setStateSet(stateset);
 }
 
-void PlotLines::setPoints(const vector<btVector3>& pts, const vector<btVector4>& cols) {
+void PlotLines::setPoints(const vector<Eigen::Vector3f>& pts, const vector<Eigen::Vector4f>& cols) {
   setPoints(toVec3Array(pts),  toVec4Array(cols));
 }
 
-void PlotLines::setPoints(const vector<btVector3>& pts) {
+void PlotLines::setPoints(const vector<Eigen::Vector3f>& pts) {
   osg::ref_ptr<osg::Vec4Array> osgCols = new osg::Vec4Array(pts.size());
   BOOST_FOREACH(osg::Vec4& col, *osgCols) col = m_defaultColor;
   setPoints(toVec3Array(pts),  osgCols);

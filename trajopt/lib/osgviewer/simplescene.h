@@ -5,6 +5,7 @@
 #include "plotting.h"
 #include <Eigen/Dense>
 #include <boost/bind.hpp>
+#include <boost/function.hpp>
 
 const Eigen::Vector3f cameraHomePosition(5, 0, 5);
 const Eigen::Vector3f cameraHomeCenter(0, 0, 0);
@@ -12,8 +13,6 @@ const Eigen::Vector3f cameraHomeUp(0, 0, 1);
 const int windowHeight = 800;
 const int windowWidth = 800;
 const float zoomFactor = 0.1;
-
-
 
 class Scene;
 
@@ -73,10 +72,8 @@ struct Scene {
 
 	void showWindow(bool showWindow, bool realtime);
 
-	bool drawingOn, syncTime;
+	bool drawingOn;
 	void setDrawing(bool b) { drawingOn = b; }
-	void setSyncTime(bool b) { syncTime = b; }
-
 
 	// Starts the viewer. Must be called before any step/draw/viewerLoop call
 	// and after adding objects to the environment
@@ -86,7 +83,7 @@ struct Scene {
 	// updates the display (if displayOn is true)
 	// If syncTime is true, then these will block until the time interval passes on the system clock
 	virtual void step();
-	virtual void idleFor(float time);
 	virtual void draw();
 
+	virtual void run();
 };

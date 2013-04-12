@@ -1,8 +1,6 @@
 #include <math.h>
 #include "util.h"
-#include "thread_socket_interface.h"
 #include <boost/foreach.hpp>
-#include "utils/conversions.h"
 #include <vector>
 
 using namespace Eigen;
