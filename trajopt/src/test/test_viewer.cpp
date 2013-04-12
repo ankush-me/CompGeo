@@ -1,6 +1,6 @@
-#include "simplescene.h"
-#include "plotting.h"
-#include "util.h"
+#include "osgviewer/simplescene.h"
+#include "osgviewer/plotting.h"
+#include "osgviewer/util.h"
 
 class CustomScene : public Scene{
 

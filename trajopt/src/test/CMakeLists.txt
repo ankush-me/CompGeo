@@ -1,6 +1,5 @@
 
 include_directories(
-  ${CMAKE_SOURCE_DIR}/lib/osgviewer
   ${CMAKE_SOURCE_DIR}/lib
 )
 
