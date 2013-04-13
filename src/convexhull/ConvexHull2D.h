@@ -1,7 +1,11 @@
 /* Computes convex hulls of 2d points. */
+#pragma once
 
 #include <Eigen/Dense>
 #include <vector>
+#include "utils/sorting.h"
+#include "utils/geom_predicates.h"
+
 
 using namespace std;
 using namespace Eigen;
@@ -17,12 +21,8 @@ public:
 		CHANS
 	};
 
-
 	/** Returns the indices of input vertices in clockwise order which form the convex hull.
 	 * Uses Graham's scan */
-	vector<int> GrahamsConv2d (const vector<Vector2f> pts) {
-		vector<int> lexicoOrder(pts);
-	}
-
+	vector<Vector2f> GrahamsConv2d (const vector<Vector2f> &pts);
 
 };

@@ -6,6 +6,15 @@
 using namespace Eigen;
 using namespace std;
 
+
+/** Comparator used in sorting vectors. */
+bool Comparator::operator() (const VectorXf &v1, const VectorXf &v2) const {
+	int i = 0;
+	while(i < d && v1[i] == v2[i]) {i++;}
+	return (i==d || v1[i] < v2[i]);
+}
+
+
 /** Sort a matrix NxD (N points in D dimensions) lexicographically. In-place. */
 void lexicoSort(Eigen::MatrixXf &mat_nd) {
 	int n = mat_nd.rows();
@@ -29,7 +38,7 @@ void lexicoSort(vector<Matrix<T, R, C, _Options, _MaxRows, _MaxCols> >& mat_nd) 
 	int n = mat_nd.size();
 	if (n != 0) {
 		int d = mat_nd[0].rows();
-	sort(mat_nd.begin(), mat_nd.end(), Comparator(d));
+		sort(mat_nd.begin(), mat_nd.end(), Comparator(d));
 	}
 }
 

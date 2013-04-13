@@ -8,11 +8,7 @@ struct Comparator : std::binary_function <Eigen::VectorXf, Eigen::VectorXf, bool
 	int d; // dimensions of the vector
 	Comparator(int _d) : d(_d) {}
 
-	bool operator() (const Eigen::VectorXf &v1, const Eigen::VectorXf &v2) const {
-			int i = 0;
-			while(i < d && v1[i] == v2[i]) {i++;}
-			return (i==d || v1[i] < v2[i]);
-		}
+	bool operator() (const Eigen::VectorXf &v1, const Eigen::VectorXf &v2) const;
 };
 
 

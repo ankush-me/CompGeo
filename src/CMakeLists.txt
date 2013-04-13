@@ -4,4 +4,5 @@ include_directories(
 )
 
 add_subdirectory(utils)
+add_subdirectory(convexhull)
 add_subdirectory(test)
