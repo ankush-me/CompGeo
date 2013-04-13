@@ -14,10 +14,7 @@ include_directories(
   ${OSG_INCLUDE_DIRS}
   ${CMAKE_SOURCE_DIR}/lib
 )
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations -fvisibility=hidden")
 
                     
 add_library(osgviewer   environment.cpp plotting.cpp simplescene.cpp util.cpp)
-target_link_libraries(osgviewer ${OSG_LIBRARIES}  ${Boost_SYSTEM_LIBRARY} )
-
-add_subdirectory(test)
+target_link_libraries(osgviewer ${OSG_LIBRARIES}  ${Boost_SYSTEM_LIBRARY}  osgShadow)
