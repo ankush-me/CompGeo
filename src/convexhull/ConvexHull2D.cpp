@@ -12,11 +12,12 @@ using namespace Eigen;
  * Uses Graham's scan */
 vector<Vector2f> ConvexHull2D::GrahamsConv2d (const vector<Vector2f> &pts) {
 
+	// sort lexicographically
 	vector<Vector2f> sorted_pts(pts);
 	lexicoSort(sorted_pts);
 
+	// construct the lower-hull
 	vector<Vector2f> stack;
-
 	int i = 0;
 	while (i < sorted_pts.size()) {
 		Vector2f pt = sorted_pts[i];
@@ -30,30 +31,25 @@ vector<Vector2f> ConvexHull2D::GrahamsConv2d (const vector<Vector2f> &pts) {
 		}
 	}
 
+	// construct the upper-hull
 	vector<Vector2f> stack2;
-	i = 0;
-	while (i < sorted_pts.size()) {
+	i = sorted_pts.size()-1;
+	while (i >= 0) {
 		Vector2f pt = sorted_pts[i];
-		i += 1;
+		i -= 1;
 		stack2.push_back(pt);
 
 		int N = stack2.size();
-		while(N >= 3 && !cw(stack2[N-3], stack2[N-2], stack2[N-1])) {
+		while(N >= 3 && !ccw(stack2[N-3], stack2[N-2], stack2[N-1])) {
 			stack2.erase(stack2.end()-2);
 			N -= 1;
 		}
 	}
 
-	cout << "stack2: "<< stack2.size() << endl;
-	for(int c= stack2.size(); c >= 0; c--)
+	// append the list of upper-hull to the lower-hull
+	// (the first and the last vertices of the 2-hulls are the same, hence skip them.)
+	for(int c= 1; c < stack2.size()-1;  c++)
 		stack.push_back(stack2[c]);
-
-	for(int c=0; c < stack.size(); c++) {
-		cout << stack[c].transpose() <<endl;
-	}
-
-
 
 	return stack;
 }
-

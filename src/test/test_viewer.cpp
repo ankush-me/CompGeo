@@ -45,24 +45,35 @@ int main (int argc, char* argv[]) {
 	//util::drawPoly(verts, Vector3f(1,0,0), 1, s.env);
 
 
-	/** Test orientation function. */
-	vector<Vector2f> verts2d;
-	verts2d.push_back(Vector2f(0,0));
-	verts2d.push_back(Vector2f(2,0));
-	verts2d.push_back(Vector2f(0,1));
-	verts2d.push_back(Vector2f(1,0.5));
-	verts2d.push_back(Vector2f(1,0.7));
-	verts2d.push_back(Vector2f(1.1,1.4));
+	/** Test convex-hull function. */
 
-	vector<Vector3f> pts3d = to3d(verts2d);
-	util::drawPoly(pts3d, Vector3f(1,0,0), 1, s.env);
+	/** TEST 1. */
+//	vector<Vector2f> verts2d;
+//	verts2d.push_back(Vector2f(0,0));
+//	verts2d.push_back(Vector2f(2,0));
+//	verts2d.push_back(Vector2f(0,1));
+//	verts2d.push_back(Vector2f(1,0.5));
+//	verts2d.push_back(Vector2f(1,0.7));
+//	verts2d.push_back(Vector2f(1.1,1.4));
+//	vector<Vector3f> pts3d = to3d(verts2d);
+//	ConvexHull2D conv;
+//	vector<Vector2f> conv_pts = conv.GrahamsConv2d(verts2d);
+//	vector<Vector3f> pts3d2 = to3d(conv_pts);
+//	util::drawPoly(pts3d, Vector3f(1,0,0), 1, s.env);
+//	util::drawSpheres(pts3d2, Vector3f(0,1,0), 1, 0.1, s.env);
 
 
+	MatrixXf randm = MatrixXf::Random(100,2);
+	vector<Vector2f> verts2d_2(100);
+	for (int i = 0 ; i < 100; i+=1) {
+		verts2d_2[i] = randm.row(i);
+	}
+	vector<Vector3f> pts3d = to3d(verts2d_2);
 	ConvexHull2D conv;
-	vector<Vector2f> conv_pts = conv.GrahamsConv2d(verts2d);
+	vector<Vector2f> conv_pts = conv.GrahamsConv2d(verts2d_2);
 	vector<Vector3f> pts3d2 = to3d(conv_pts);
-
-	util::drawSpheres(pts3d2, Vector3f(0,1,0), 1, 0.1, s.env);
+	util::drawPoly(pts3d2, Vector3f(1,0,0), 1, s.env);
+	util::drawSpheres(pts3d, Vector3f(0,1,0), 1, 0.01, s.env);
 
 	s.run();
 }
