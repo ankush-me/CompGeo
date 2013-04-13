@@ -48,9 +48,9 @@ void Scene::startViewer() {
 
 
 void Scene::help() {
-  printf("key bindings:\n");
+  printf("key bindings:\n-------------\n");
   for (multimap<int,string>::iterator it = keyCallbackDescs.begin(); it != keyCallbackDescs.end(); ++it) {
-    printf("%c: %s\n", (char)it->first, it->second.c_str());
+    printf("\t%c : %s\n", (char)it->first, it->second.c_str());
   }
 }
 

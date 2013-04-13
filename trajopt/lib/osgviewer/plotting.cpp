@@ -7,6 +7,8 @@
 #include <osg/StateSet>
 #include <osg/BlendFunc>
 #include <osg/ShapeDrawable>
+#include <osgUtil/SmoothingVisitor>
+
 #include <boost/foreach.hpp>
 
 using namespace std;
@@ -20,10 +22,6 @@ void PlotObject::setDefaultColor(float r, float g, float b, float a) {
 
 void PlotObject::clear() {
   m_geom->getPrimitiveSetList().clear();
-  osg::ref_ptr<osg::Vec3Array> osgPts = new osg::Vec3Array;
-  osg::ref_ptr<osg::Vec4Array> osgCols = new osg::Vec4Array;
-  m_geom->setVertexArray(osgPts);
-  m_geom->setColorArray(osgCols);
 }
 
 PlotPoints::PlotPoints(float size) {
@@ -280,4 +278,53 @@ void PlotCurve::setPoints(const osg::ref_ptr<osg::Vec3Array>& osgPts, const osg:
   m_geom->setVertexArray(osgPts);
   m_geom->getPrimitiveSetList().clear();
   m_geom->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINE_STRIP,0,nPts));
+}
+
+
+PlotPolygons::PlotPolygons() {
+	m_defaultColor = osg::Vec4(0.545,0,0,1);
+	m_geode = new osg::Geode();
+	m_nDrawables = 0;
+
+	osg::ref_ptr<osg::StateSet> stateset = new osg::StateSet();
+	osg::ref_ptr<osg::BlendFunc> blendFunc = new osg::BlendFunc;
+	blendFunc->setFunction(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	stateset->setAttributeAndModes(blendFunc);
+	stateset->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+	stateset->setMode(GL_BLEND, osg::StateAttribute::ON);
+	m_geode->setStateSet(stateset);
+}
+
+void PlotPolygons::setDefaultColor(float r, float g, float b, float a) {
+  m_defaultColor = osg::Vec4(r,g,b,a);
+}
+
+// adds a polygon. Assumes that the vertices are given in counter-clockwise manner.
+void PlotPolygons::addPolygon(const osg::ref_ptr<osg::Vec3Array>& vertices, const osg::ref_ptr<osg::Vec4Array>& colors) {
+	int nPts = vertices->getNumElements();
+	osg::Geometry* m_geom = new osg::Geometry();
+	m_geom->setColorArray(colors);
+	m_geom->setVertexArray(vertices);
+	m_geom->setColorBinding(osg::Geometry::BIND_PER_VERTEX);
+	m_geom->getPrimitiveSetList().clear();
+	m_geom->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::POLYGON,0,nPts));
+
+	osgUtil::SmoothingVisitor::smooth(*m_geom);
+	m_geode->addDrawable(m_geom);
+	m_nDrawables += 1;
+}
+
+void PlotPolygons::addPolygon(const osg::ref_ptr<osg::Vec3Array>& vertices) {
+  osg::ref_ptr<osg::Vec4Array> osgCols = new osg::Vec4Array(vertices->size());
+  BOOST_FOREACH(osg::Vec4& col, *osgCols) col = m_defaultColor;
+  addPolygon(vertices, osgCols);
+}
+
+
+void PlotPolygons::addPolygon(const vector<Eigen::Vector3f>& pts, const vector<Eigen::Vector4f>& cols) {
+  addPolygon(toVec3Array(pts), toVec4Array(cols));
+}
+
+void PlotPolygons::addPolygon(const vector<Eigen::Vector3f>& pts) {
+  addPolygon(toVec3Array(pts));
 }
