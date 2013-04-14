@@ -10,14 +10,14 @@ using namespace Eigen;
 
 /** Returns the indices of input vertices in clockwise order which form the convex hull.
  * Uses Graham's scan */
-vector<Vector2f> ConvexHull2D::GrahamsConv2d (const vector<Vector2f> &pts) {
+vector2 ConvexHull2D::GrahamsConv2d (const vector2 &pts) {
 
 	// sort lexicographically
-	vector<Vector2f> sorted_pts(pts);
+	vector2 sorted_pts(pts);
 	lexicoSort(sorted_pts);
 
 	// construct the lower-hull
-	vector<Vector2f> stack;
+	vector2 stack;
 	int i = 0;
 	while (i < sorted_pts.size()) {
 		Vector2f pt = sorted_pts[i];
@@ -32,7 +32,7 @@ vector<Vector2f> ConvexHull2D::GrahamsConv2d (const vector<Vector2f> &pts) {
 	}
 
 	// construct the upper-hull
-	vector<Vector2f> stack2;
+	vector2 stack2;
 	i = sorted_pts.size()-1;
 	while (i >= 0) {
 		Vector2f pt = sorted_pts[i];

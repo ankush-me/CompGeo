@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(CompGeo)
 
-find_package(Eigen REQUIRED)
 find_package(Boost COMPONENTS system REQUIRED)
 
 

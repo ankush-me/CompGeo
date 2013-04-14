@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Eigen/Dense>
+#include <Eigen/AlignedVector>
 #include <vector>
 
 
@@ -17,7 +18,10 @@ void lexicoSort(Eigen::MatrixXf &mat_nd);
 
 
 /** Sort a vector of points lexicographically. In-place. */
-
 template <typename T, int R, int C, int _Options, int _MaxRows, int _MaxCols>
 void lexicoSort(std::vector<Eigen::Matrix<T, R,C,  _Options, _MaxRows, _MaxCols> > &mat_nd);
 
+/** Sort a vector of points lexicographically. In-place. Redefined for aligned-vectors.*/
+template <typename T, int R, int C, int _Options, int _MaxRows, int _MaxCols>
+void lexicoSort(std::vector<Eigen::Matrix<T, R, C, _Options, _MaxRows, _MaxCols>,
+		          Eigen::aligned_allocator<Eigen::Matrix<T, R, C, _Options, _MaxRows, _MaxCols> > >& mat_nd);

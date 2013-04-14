@@ -22,14 +22,14 @@ std::vector<float> toVec(const Eigen::VectorXf& in) {
   return out;
 }
 
-Eigen::MatrixXf toEigenMatrix(const std::vector<Eigen::Vector3f>& in) {
+Eigen::MatrixXf toEigenMatrix(const vector3& in) {
   Eigen::MatrixXf out(in.size(), 3);
   for (int i=0; i<in.size(); i++) out.row(i) = in[i].transpose();
   return out;
 }
 
 
-osg::ref_ptr<osg::Vec3Array> toVec3Array(const std::vector<Vector3f>& in) {
+osg::ref_ptr<osg::Vec3Array> toVec3Array(const vector3& in) {
     osg::ref_ptr<osg::Vec3Array> out = new osg::Vec3Array();
     out->reserve(in.size());
     for (int i=0; i < in.size(); i+=1) {
@@ -39,7 +39,7 @@ osg::ref_ptr<osg::Vec3Array> toVec3Array(const std::vector<Vector3f>& in) {
     return out;
 }
 
-osg::ref_ptr<osg::Vec4Array> toVec4Array(const std::vector<Vector4f>& in) {
+osg::ref_ptr<osg::Vec4Array> toVec4Array(const vector4& in) {
     osg::ref_ptr<osg::Vec4Array> out = new osg::Vec4Array();
     out->reserve(in.size());
     for (int i=0; i < in.size(); i+=1) {
@@ -67,7 +67,7 @@ osg::ref_ptr<osg::Vec4Array> toVec4Array(const Eigen::MatrixXf& in) {
     return out;
 }
 
-void drawSpheres(vector<Eigen::Vector3f> points, Eigen::Vector3f color, float alpha, float radius, Environment::Ptr env) {
+void drawSpheres(vector3 points, Eigen::Vector3f color, float alpha, float radius, Environment::Ptr env) {
 	PlotSpheres::Ptr plot_spheres(new PlotSpheres());
 	env->add(plot_spheres);
 
@@ -79,16 +79,16 @@ void drawSpheres(vector<Eigen::Vector3f> points, Eigen::Vector3f color, float al
 }
 
 void drawSpheres(Eigen::Vector3f point, Vector3f color, float alpha, float radius, Environment::Ptr env) {
-	drawSpheres(vector<Vector3f>(1,point), color, alpha, radius, env);
+	drawSpheres(vector3(1,point), color, alpha, radius, env);
 }
 
-void drawLines(vector<Vector3f> points0, vector<Vector3f> points1, Vector3f color, float alpha, Environment::Ptr env) {
+void drawLines(vector3 points0, vector3 points1, Vector3f color, float alpha, Environment::Ptr env) {
 	assert(points0.size() == points1.size());
 	PlotLines::Ptr plot_lines(new PlotLines());
 	env->add(plot_lines);
 
-	vector<Vector3f> linePoints;
-	vector<Vector4f> lineColors;
+	vector3 linePoints;
+	vector4 lineColors;
 
 	for (int i=0; i<points0.size(); i++) {
 		linePoints.push_back(points0[i]);
@@ -98,9 +98,9 @@ void drawLines(vector<Vector3f> points0, vector<Vector3f> points1, Vector3f colo
 	plot_lines->setPoints(linePoints, lineColors);
 }
 
-void drawPoly(vector<Vector3f> points, Vector3f color, float alpha, Environment::Ptr env) {
-	vector<Vector3f> pts0;
-	vector<Vector3f> pts1;
+void drawPoly(vector3 points, Vector3f color, float alpha, Environment::Ptr env) {
+	vector3 pts0;
+	vector3 pts1;
 	for (int i=0; i<(points.size()-1); i++) {
 		pts0.push_back(points[i]);
 		pts1.push_back(points[i+1]);

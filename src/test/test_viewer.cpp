@@ -6,6 +6,8 @@
 #include "utils/sorting.h"
 #include "convexhull/ConvexHull2D.h"
 
+#include <Eigen/AlignedVector>
+
 using namespace Eigen;
 using namespace std;
 
@@ -13,8 +15,8 @@ class CustomScene : public Scene{};
 
 
 
-vector<Vector3f> to3d(const vector<Vector2f> &pts) {
-	vector<Vector3f> pts3d(pts.size());
+vector<Vector3f> to3d(const vector2 &pts) {
+	vector3 pts3d(pts.size());
 	for(int i =0 ; i < pts.size(); i++ ) {
 		Vector2f pt = pts[i];
 		pts3d[i] = Vector3f(pt.x(), pt.y(), 0);
@@ -34,7 +36,7 @@ int main (int argc, char* argv[]) {
 	PlotPolygons::Ptr polys(new PlotPolygons);
 	s.env->add(polys);
 
-	vector<Vector3f> verts;
+	vector3 verts;
 	verts.push_back(Vector3f(1,0,0));
 	verts.push_back(Vector3f(0,1,0));
 	verts.push_back(Vector3f(0,0,1));
@@ -64,14 +66,14 @@ int main (int argc, char* argv[]) {
 
 
 	MatrixXf randm = MatrixXf::Random(100,2);
-	vector<Vector2f> verts2d_2(100);
+	vector2 verts2d_2(100);
 	for (int i = 0 ; i < 100; i+=1) {
 		verts2d_2[i] = randm.row(i);
 	}
-	vector<Vector3f> pts3d = to3d(verts2d_2);
+	vector3 pts3d = to3d(verts2d_2);
 	ConvexHull2D conv;
-	vector<Vector2f> conv_pts = conv.GrahamsConv2d(verts2d_2);
-	vector<Vector3f> pts3d2 = to3d(conv_pts);
+	vector2 conv_pts = conv.GrahamsConv2d(verts2d_2);
+	vector3 pts3d2 = to3d(conv_pts);
 	util::drawPoly(pts3d2, Vector3f(1,0,0), 1, s.env);
 	util::drawSpheres(pts3d, Vector3f(0,1,0), 1, 0.01, s.env);
 

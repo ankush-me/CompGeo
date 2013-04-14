@@ -47,7 +47,8 @@ PlotPoints::PlotPoints(float size) {
   m_geode->setStateSet(stateset);
 }
 
-void PlotPoints::setPoints(const osg::ref_ptr<osg::Vec3Array>& osgPts, const osg::ref_ptr<osg::Vec4Array>& osgCols) {
+void PlotPoints::setPoints(const osg::ref_ptr<osg::Vec3Array>& osgPts,
+		                      const osg::ref_ptr<osg::Vec4Array>& osgCols) {
   int nPts = osgPts->getNumElements();
   m_geom->setVertexArray(osgPts);
   m_geom->setColorArray(osgCols);
@@ -71,10 +72,10 @@ void PlotPoints::forceTransparency(float a) {
   }
 }
 
-void PlotPoints::setPoints(const vector<Eigen::Vector3f>& pts, const vector<Eigen::Vector4f>& cols) {
+void PlotPoints::setPoints(const vector3& pts, const vector4& cols) {
   setPoints(toVec3Array(pts), toVec4Array(cols));
 }
-void PlotPoints::setPoints(const vector<Eigen::Vector3f>& pts) {
+void PlotPoints::setPoints(const vector3& pts) {
   setPoints(toVec3Array(pts));
 }
 
@@ -101,11 +102,11 @@ PlotLines::PlotLines(float width) {
   m_geode->setStateSet(stateset);
 }
 
-void PlotLines::setPoints(const vector<Eigen::Vector3f>& pts, const vector<Eigen::Vector4f>& cols) {
+void PlotLines::setPoints(const vector3& pts, const vector4& cols) {
   setPoints(toVec3Array(pts),  toVec4Array(cols));
 }
 
-void PlotLines::setPoints(const vector<Eigen::Vector3f>& pts) {
+void PlotLines::setPoints(const vector3& pts) {
   osg::ref_ptr<osg::Vec4Array> osgCols = new osg::Vec4Array(pts.size());
   BOOST_FOREACH(osg::Vec4& col, *osgCols) col = m_defaultColor;
   setPoints(toVec3Array(pts),  osgCols);
@@ -261,11 +262,11 @@ PlotCurve::PlotCurve(float width) : osg::Geode(), m_defaultColor(1,0,0,1) {
   setStateSet(stateset);
 }
 
-void PlotCurve::setPoints(const vector<Eigen::Vector3f>& pts, const vector<Eigen::Vector4f>& cols) {
+void PlotCurve::setPoints(const vector3& pts, const vector4& cols) {
   setPoints(toVec3Array(pts),  toVec4Array(cols));
 }
 
-void PlotCurve::setPoints(const vector<Eigen::Vector3f>& pts) {
+void PlotCurve::setPoints(const vector3& pts) {
   osg::ref_ptr<osg::Vec4Array> osgCols = new osg::Vec4Array(pts.size());
   BOOST_FOREACH(osg::Vec4& col, *osgCols) col = m_defaultColor;
   setPoints(toVec3Array(pts),  osgCols);
@@ -321,10 +322,10 @@ void PlotPolygons::addPolygon(const osg::ref_ptr<osg::Vec3Array>& vertices) {
 }
 
 
-void PlotPolygons::addPolygon(const vector<Eigen::Vector3f>& pts, const vector<Eigen::Vector4f>& cols) {
+void PlotPolygons::addPolygon(const vector3& pts, const vector4& cols) {
   addPolygon(toVec3Array(pts), toVec4Array(cols));
 }
 
-void PlotPolygons::addPolygon(const vector<Eigen::Vector3f>& pts) {
+void PlotPolygons::addPolygon(const vector3& pts) {
   addPolygon(toVec3Array(pts));
 }

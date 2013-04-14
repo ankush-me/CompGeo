@@ -1,6 +1,8 @@
 #pragma once
 
 #include <Eigen/Dense>
+#include <Eigen/AlignedVector>
+
 #include "environment.h"
 #include <iostream>
 #include <vector>
@@ -37,8 +39,8 @@ public:
 	PlotPoints(float size=5);
 	void setPoints(const osg::ref_ptr<osg::Vec3Array>& osgPts, const osg::ref_ptr<osg::Vec4Array>& osgCols);
 	void setPoints(const osg::ref_ptr<osg::Vec3Array>& osgPts);
-	void setPoints(const std::vector<Eigen::Vector3f>& pts, const std::vector<Eigen::Vector4f>& cols);
-	void setPoints(const std::vector<Eigen::Vector3f>& pts);
+	void setPoints(const vector3 &pts, const vector4 &cols);
+	void setPoints(const vector3 &pts);
 	void forceTransparency(float a);
 };
 
@@ -48,8 +50,8 @@ class PlotLines : public PlotObject {
 public:
 	typedef boost::shared_ptr<PlotLines> Ptr;
 	PlotLines(float width=5);
-	void setPoints(const std::vector<Eigen::Vector3f>& pts, const std::vector<Eigen::Vector4f>& cols);
-	void setPoints(const std::vector<Eigen::Vector3f>& pts);
+	void setPoints(const vector3 &pts, const vector4 &cols);
+	void setPoints(const vector3 &pts);
 	void setPoints(const osg::ref_ptr<osg::Vec3Array>& pts, const osg::ref_ptr<osg::Vec4Array>& cols);
 	void setPoints(const osg::ref_ptr<osg::Vec3Array>& pts);
 	void forceTransparency(float a);
@@ -74,7 +76,8 @@ public:
 
 	PlotSpheres();
 	// void setDefaultColor(float r, float g, float b, float a);
-	void plot(const osg::ref_ptr<osg::Vec3Array>& centers, const osg::ref_ptr<osg::Vec4Array>& cols, const std::vector<float>& radii);
+	void plot(const osg::ref_ptr<osg::Vec3Array>& centers, const osg::ref_ptr<osg::Vec4Array>& cols,
+			   const std::vector<float>& radii);
 
 };
 
@@ -124,8 +127,8 @@ public:
 	osg::ref_ptr<osg::Geometry> m_geom;
 
 	PlotCurve(float width=5);
-	void setPoints(const std::vector<Eigen::Vector3f>& pts, const std::vector<Eigen::Vector4f>& cols);
-	void setPoints(const std::vector<Eigen::Vector3f>& pts);
+	void setPoints(const vector3 &pts, const vector4 &cols);
+	void setPoints(const vector3 &pts);
 	void setPoints(const osg::ref_ptr<osg::Vec3Array>& pts, const osg::ref_ptr<osg::Vec4Array>& cols);
 	void setPoints(const osg::ref_ptr<osg::Vec3Array>& pts);
 };
@@ -164,6 +167,6 @@ public:
 	// adds a polygon. Assumes that the vertices are given in counter-clockwise manner.
 	void addPolygon(const osg::ref_ptr<osg::Vec3Array>& vertices, const osg::ref_ptr<osg::Vec4Array>& colors);
 	void addPolygon(const osg::ref_ptr<osg::Vec3Array>& vertices);
-	void addPolygon(const vector<Eigen::Vector3f> &vertices, const vector<Eigen::Vector4f>& colors);
-	void addPolygon(const vector<Eigen::Vector3f>& vertices);
+	void addPolygon(const vector3 &vertices, const vector4 &colors);
+	void addPolygon(const vector3 &vertices);
 };
