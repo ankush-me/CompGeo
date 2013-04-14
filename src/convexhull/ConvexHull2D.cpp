@@ -56,3 +56,28 @@ vector2 ConvexHull2D::GrahamsConv2d (const vector2 &pts) {
 
 	return stack;
 }
+
+
+/** Returns the vertices in clockwise order which form the convex hull.
+ * Uses Jarvis' march */
+vector2 ConvexHull2D::JarvisConv2d (const vector2 &pts) {
+	vector2 conv_pts;
+	const int N = pts.size();
+
+	int lexico_min = lexicoMin(pts);
+	int p = lexico_min;
+
+	do {
+		int q = 0;
+		while (q < N && q==p) {q += 1;};  // choose q such that q!=p
+
+		for (int r=0; r < N; r+=1) {
+			if (r==p || r==q) continue;
+			if (ccw(pts[p], pts[r], pts[q]))
+				q =r;
+		}
+		conv_pts.push_back(pts[p]);
+		p = q;
+	} while (p != lexico_min);
+	return conv_pts;
+}

@@ -21,8 +21,12 @@ public:
 		CHANS
 	};
 
-	/** Returns the indices of input vertices in clockwise order which form the convex hull.
+	/** Returns the vertices in clockwise order which form the convex hull.
 	 * Uses Graham's scan */
 	vector2 GrahamsConv2d (const vector2 &pts);
+
+	/** Returns the vertices in clockwise order which form the convex hull.
+	 * Uses Jarvis' march [gift-wrapping algorithm]. */
+	vector2 JarvisConv2d (const vector2 &pts);
 
 };

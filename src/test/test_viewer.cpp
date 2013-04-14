@@ -77,7 +77,13 @@ int main (int argc, char* argv[]) {
 	util::drawPoly(pts3d2, Vector3f(1,0,0), 1, s.env);
 	util::drawSpheres(pts3d, Vector3f(0,1,0), 1, 0.01, s.env);
 
-	cout << "LexicoMin : "<< lexicoMin(verts2d_2).transpose()<<endl;
-	cout << "LexicoMax : "<< lexicoMax(verts2d_2).transpose()<<endl;
+	vector2 j_conv_pts = conv.JarvisConv2d(verts2d_2);
+
+	cout << "graham's size: "<< conv_pts.size()<<endl;
+	cout << "jarvis's size: "<< j_conv_pts.size()<<endl;
+
+	for (int i=0; i < conv_pts.size(); i++)
+		cout << "graham: "<<conv_pts[i].transpose() << " | jarvis: "<< j_conv_pts[i].transpose()<<endl;
+
 	s.run();
 }
