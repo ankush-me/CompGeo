@@ -15,7 +15,7 @@ class CustomScene : public Scene{};
 
 
 
-vector<Vector3f> to3d(const vector2 &pts) {
+vector3 to3d(const vector2 &pts) {
 	vector3 pts3d(pts.size());
 	for(int i =0 ; i < pts.size(); i++ ) {
 		Vector2f pt = pts[i];
@@ -65,25 +65,36 @@ int main (int argc, char* argv[]) {
 //	util::drawSpheres(pts3d2, Vector3f(0,1,0), 1, 0.1, s.env);
 
 
-	MatrixXf randm = MatrixXf::Random(100,2);
-	vector2 verts2d_2(100);
-	for (int i = 0 ; i < 100; i+=1) {
+	const int N=10000;
+	MatrixXf randm = MatrixXf::Random(N,2);
+	vector2 verts2d_2(N);
+	for (int i = 0 ; i < N; i+=1) {
 		verts2d_2[i] = randm.row(i);
 	}
 	vector3 pts3d = to3d(verts2d_2);
 	ConvexHull2D conv;
 	vector2 conv_pts = conv.GrahamsConv2d(verts2d_2);
+
 	vector3 pts3d2 = to3d(conv_pts);
 	util::drawPoly(pts3d2, Vector3f(1,0,0), 1, s.env);
 	util::drawSpheres(pts3d, Vector3f(0,1,0), 1, 0.01, s.env);
 
-	vector2 j_conv_pts = conv.JarvisConv2d(verts2d_2);
+	PlotLines::Ptr pLines(new PlotLines);
+	PlotPoints::Ptr pSpheres(new PlotPoints);
+	s.env->add(pLines);
+	s.env->add(pSpheres);
+
+
+	vector2 j_conv_pts = conv.ShatteringConv2d(verts2d_2, 2);
 
 	cout << "graham's size: "<< conv_pts.size()<<endl;
-	cout << "jarvis's size: "<< j_conv_pts.size()<<endl;
+	cout << "chans's size: "<< j_conv_pts.size()<<endl;
 
 	for (int i=0; i < conv_pts.size(); i++)
-		cout << "graham: "<<conv_pts[i].transpose() << " | jarvis: "<< j_conv_pts[i].transpose()<<endl;
+		cout << "graham: "<<conv_pts[i].transpose() << " | chans: "<< j_conv_pts[i].transpose()<<endl;
+
 
 	s.run();
+
+
 }
