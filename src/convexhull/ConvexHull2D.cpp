@@ -12,6 +12,9 @@ using namespace Eigen;
  * Uses Graham's scan */
 vector2 ConvexHull2D::GrahamsConv2d (const vector2 &pts) {
 
+	if (pts.size() <= 3) // easy-case.
+		return pts;
+
 	// sort lexicographically
 	vector2 sorted_pts(pts);
 	lexicoSort(sorted_pts);

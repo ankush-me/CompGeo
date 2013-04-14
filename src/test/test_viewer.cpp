@@ -77,5 +77,7 @@ int main (int argc, char* argv[]) {
 	util::drawPoly(pts3d2, Vector3f(1,0,0), 1, s.env);
 	util::drawSpheres(pts3d, Vector3f(0,1,0), 1, 0.01, s.env);
 
+	cout << "LexicoMin : "<< lexicoMin(verts2d_2).transpose()<<endl;
+	cout << "LexicoMax : "<< lexicoMax(verts2d_2).transpose()<<endl;
 	s.run();
 }

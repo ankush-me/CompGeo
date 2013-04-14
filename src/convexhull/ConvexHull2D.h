@@ -17,7 +17,7 @@ public:
 
 	enum Algo {
 		GRAHAMS,
-		JARVINS,
+		JARVIS,
 		CHANS
 	};
 

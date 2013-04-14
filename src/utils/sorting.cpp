@@ -15,6 +15,128 @@ bool Comparator::operator() (const VectorXf &v1, const VectorXf &v2) const {
 }
 
 
+/** Returns the lexicographically minimum points in a list of points.*/
+VectorXf lexicoMin(const MatrixXf &mat_nd) {
+	const int n = mat_nd.rows();
+	if (!n) return VectorXf();
+
+	const int d = mat_nd.cols();
+	Comparator isLess(d);
+
+	VectorXf min_pt = mat_nd.row(0);
+
+	for (int i= 1; i < n; i += 1) {
+		if (isLess(mat_nd.row(i), min_pt) )
+			min_pt = mat_nd.row(i);
+	}
+	return min_pt;
+}
+
+
+template <typename T, int R, int C, int _Options, int _MaxRows, int _MaxCols>
+Matrix<T, R,C,  _Options, _MaxRows, _MaxCols>
+lexicoMin(const vector<Matrix<T, R,C,  _Options, _MaxRows, _MaxCols> > &mat_nd) {
+
+	const int n = mat_nd.size();
+	if (!n) return Matrix<T, R,C,  _Options, _MaxRows, _MaxCols>();
+
+	const int d = mat_nd[0].size();
+	Comparator isLess(d);
+
+	int min_idx = 0;
+
+	for (int i= 1; i < n; i += 1) {
+		if (isLess(mat_nd[i], mat_nd[min_idx]) )
+			min_idx = i;
+	}
+	return mat_nd[min_idx];
+}
+
+
+template <typename T, int R, int C, int _Options, int _MaxRows, int _MaxCols>
+Matrix<T, R,C,  _Options, _MaxRows, _MaxCols>
+lexicoMin(const vector<Matrix<T, R, C, _Options, _MaxRows, _MaxCols>,
+		          aligned_allocator<Matrix<T, R, C, _Options, _MaxRows, _MaxCols> > >& mat_nd) {
+	const int n = mat_nd.size();
+	if (!n) return Matrix<T, R,C,  _Options, _MaxRows, _MaxCols>();
+
+	const int d = mat_nd[0].size();
+	Comparator isLess(d);
+
+	int min_idx = 0;
+
+	for (int i= 1; i < n; i += 1) {
+		if (isLess(mat_nd[i], mat_nd[min_idx]) )
+			min_idx = i;
+	}
+	return mat_nd[min_idx];
+}
+template Eigen::Vector2f lexicoMin  (const vector2 & mat);
+template Eigen::Vector3f lexicoMin  (const vector3 & mat);
+template Eigen::Vector4f lexicoMin  (const vector4 & mat);
+template Eigen::VectorXf lexicoMin  (const std::vector<Eigen::VectorXf> & mat);
+
+
+
+/** Returns the lexicographically maximum points in a list of points.*/
+VectorXf lexicoMax(const MatrixXf &mat_nd) {
+	const int n = mat_nd.rows();
+	if (!n) return VectorXf();
+
+	const int d = mat_nd.cols();
+	Comparator isLess(d);
+
+	VectorXf min_pt = mat_nd.row(0);
+
+	for (int i= 1; i < n; i += 1) {
+		if (!isLess(mat_nd.row(i), min_pt) )
+			min_pt = mat_nd.row(i);
+	}
+	return min_pt;
+}
+template <typename T, int R, int C, int _Options, int _MaxRows, int _MaxCols>
+Matrix<T, R,C,  _Options, _MaxRows, _MaxCols>
+lexicoMax(const vector<Matrix<T, R,C,  _Options, _MaxRows, _MaxCols> > &mat_nd) {
+
+	const int n = mat_nd.size();
+	if (!n) return Matrix<T, R,C,  _Options, _MaxRows, _MaxCols>();
+
+	const int d = mat_nd[0].size();
+	Comparator isLess(d);
+
+	int min_idx = 0;
+
+	for (int i= 1; i < n; i += 1) {
+		if (!isLess(mat_nd[i], mat_nd[min_idx]) )
+			min_idx = i;
+	}
+	return mat_nd[min_idx];
+}
+template <typename T, int R, int C, int _Options, int _MaxRows, int _MaxCols>
+Matrix<T, R,C,  _Options, _MaxRows, _MaxCols>
+lexicoMax(const vector<Matrix<T, R, C, _Options, _MaxRows, _MaxCols>,
+		          aligned_allocator<Matrix<T, R, C, _Options, _MaxRows, _MaxCols> > >& mat_nd) {
+	const int n = mat_nd.size();
+	if (!n) return Matrix<T, R,C,  _Options, _MaxRows, _MaxCols>();
+
+	const int d = mat_nd[0].size();
+	Comparator isLess(d);
+
+	int min_idx = 0;
+
+	for (int i= 1; i < n; i += 1) {
+		if (!isLess(mat_nd[i], mat_nd[min_idx]) )
+			min_idx = i;
+	}
+	return mat_nd[min_idx];
+}
+template Eigen::Vector2f lexicoMax  (const vector2 & mat);
+template Eigen::Vector3f lexicoMax  (const vector3 & mat);
+template Eigen::Vector4f lexicoMax  (const vector4 & mat);
+template Eigen::VectorXf lexicoMax  (const std::vector<Eigen::VectorXf> & mat);
+
+
+
 /** Sort a matrix NxD (N points in D dimensions) lexicographically. In-place. */
 void lexicoSort(Eigen::MatrixXf &mat_nd) {
 	int n = mat_nd.rows();
@@ -37,7 +159,7 @@ template <typename T, int R, int C, int _Options, int _MaxRows, int _MaxCols>
 void lexicoSort(vector<Matrix<T, R, C, _Options, _MaxRows, _MaxCols> >& mat_nd) {
 	int n = mat_nd.size();
 	if (n != 0) {
-		int d = mat_nd[0].rows();
+		int d = mat_nd[0].size();
 		sort(mat_nd.begin(), mat_nd.end(), Comparator(d));
 	}
 }
@@ -45,10 +167,10 @@ void lexicoSort(vector<Matrix<T, R, C, _Options, _MaxRows, _MaxCols> >& mat_nd) 
 /** Sort a vector of points lexicographically. In-place.*/
 template <typename T, int R, int C, int _Options, int _MaxRows, int _MaxCols>
 void lexicoSort(vector<Matrix<T, R, C, _Options, _MaxRows, _MaxCols>,
-		          Eigen::aligned_allocator<Matrix<T, R, C, _Options, _MaxRows, _MaxCols> > >& mat_nd) {
+		Eigen::aligned_allocator<Matrix<T, R, C, _Options, _MaxRows, _MaxCols> > >& mat_nd) {
 	int n = mat_nd.size();
 	if (n != 0) {
-		int d = mat_nd[0].rows();
+		int d = mat_nd[0].size();
 		sort(mat_nd.begin(), mat_nd.end(), Comparator(d));
 	}
 }
