@@ -65,7 +65,7 @@ int main (int argc, char* argv[]) {
 //	util::drawSpheres(pts3d2, Vector3f(0,1,0), 1, 0.1, s.env);
 
 
-	const int N=10000;
+	const int N=1000000;
 	MatrixXf randm = MatrixXf::Random(N,2);
 	vector2 verts2d_2(N);
 	for (int i = 0 ; i < N; i+=1) {
@@ -73,28 +73,38 @@ int main (int argc, char* argv[]) {
 	}
 	vector3 pts3d = to3d(verts2d_2);
 	ConvexHull2D conv;
-	vector2 conv_pts = conv.GrahamsConv2d(verts2d_2);
 
-	vector3 pts3d2 = to3d(conv_pts);
-	util::drawPoly(pts3d2, Vector3f(1,0,0), 1, s.env);
-	util::drawSpheres(pts3d, Vector3f(0,1,0), 1, 0.01, s.env);
+	cout << ">>>>>>>>>>> GRAHAMS..."<<endl;
+	vector2 conv_pts = conv.conv(verts2d_2, conv.GRAHAMS);
+	cout << "<<<<<<<<<<< GRAHAMS"<<endl;
 
-	PlotLines::Ptr pLines(new PlotLines);
-	PlotPoints::Ptr pSpheres(new PlotPoints);
-	s.env->add(pLines);
-	s.env->add(pSpheres);
+	//vector3 pts3d2 = to3d(conv_pts);
+	//util::drawPoly(pts3d2, Vector3f(1,0,0), 1, s.env);
+	//util::drawSpheres(pts3d, Vector3f(0,1,0), 1, 0.01, s.env);
 
+	//PlotLines::Ptr pLines(new PlotLines);
+	//PlotPoints::Ptr pSpheres(new PlotPoints);
+	//s.env->add(pLines);
+	//s.env->add(pSpheres);
 
-	vector2 j_conv_pts = conv.ShatteringConv2d(verts2d_2, 2);
+	cout << ">>>>>>>>>>> CHANS..."<<endl;
+	vector2 j_conv_pts = conv.conv(verts2d_2, conv.CHANS);
+	cout << "<<<<<<<<<<< CHANS"<<endl;
+
+	cout << ">>>>>>>>>>> JARVIS..."<<endl;
+	vector2 c_conv_pts = conv.conv(verts2d_2, conv.JARVIS);
+	cout << "<<<<<<<<<<< JARVIS"<<endl;
+
 
 	cout << "graham's size: "<< conv_pts.size()<<endl;
 	cout << "chans's size: "<< j_conv_pts.size()<<endl;
+	cout << "chans's size: "<< c_conv_pts.size()<<endl;
 
 	for (int i=0; i < conv_pts.size(); i++)
 		cout << "graham: "<<conv_pts[i].transpose() << " | chans: "<< j_conv_pts[i].transpose()<<endl;
 
 
-	s.run();
+//	s.run();
 
 
 }

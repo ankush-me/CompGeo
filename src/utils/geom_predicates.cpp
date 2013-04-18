@@ -5,32 +5,32 @@ extern "C" {
 	#include "predicates.c"
 }
 
+using namespace Eigen;
 
-double orient2d (Eigen::Vector2d pa, Eigen::Vector2d pb, Eigen::Vector2d pc) {
+
+double orient2d (Vector2d pa, Vector2d pb, Vector2d pc) {
 	return (double) orient2d(pa.data(), pb.data(), pc.data());
 }
 
-
-bool ccw(Eigen::Vector2d pa, Eigen::Vector2d pb, Eigen::Vector2d pc) {
-	return orient2d(pa, pb, pc) > 0.0;
+double orient2d (Vector2f pa, Vector2f pb, Vector2f pc) {
+	Vector2d v1((double) pa[0], (double) pa[1]);
+	Vector2d v2((double) pb[0], (double) pb[1]);
+	Vector2d v3((double) pc[0], (double) pc[1]);
+	return (double) orient2d(v1.data(), v2.data(), v3.data());
 }
 
 
-bool ccw(Eigen::Vector2f pa, Eigen::Vector2f pb, Eigen::Vector2f pc) {
-	Eigen::Vector2d v1((double) pa[0], (double) pa[1]);
-	Eigen::Vector2d v2((double) pb[0], (double) pb[1]);
-	Eigen::Vector2d v3((double) pc[0], (double) pc[1]);
-	return ccw(v1, v2, v3);
+bool ccw(Vector2d pa, Vector2d pb, Vector2d pc) {
+	return (bool) (orient2d(pa, pb, pc) > 0.0);
+}
+bool ccw(Vector2f pa, Vector2f pb, Vector2f pc) {
+	return (bool)(orient2d(pa, pb, pc) > 0.0);
 }
 
 
-bool cw(Eigen::Vector2d pa, Eigen::Vector2d pb, Eigen::Vector2d pc) {
-	return orient2d(pa, pb, pc) < 0.0;
+bool cw(Vector2d pa, Vector2d pb, Vector2d pc) {
+	return (bool) (orient2d(pa, pb, pc) < 0.0);
 }
-
-bool cw(Eigen::Vector2f pa, Eigen::Vector2f pb, Eigen::Vector2f pc) {
-	Eigen::Vector2d v1((double) pa[0], (double) pa[1]);
-	Eigen::Vector2d v2((double) pb[0], (double) pb[1]);
-	Eigen::Vector2d v3((double) pc[0], (double) pc[1]);
-	return cw(v1, v2, v3);
+bool cw(Vector2f pa, Vector2f pb, Vector2f pc) {
+	return (bool) (orient2d(pa, pb, pc) < 0.0);
 }

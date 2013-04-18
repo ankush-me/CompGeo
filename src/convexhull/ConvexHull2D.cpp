@@ -3,12 +3,27 @@
 #include "ConvexHull2D.h"
 
 #include <iostream>
+#include "utils/misc.h"
 
 using namespace std;
 using namespace Eigen;
 
 
-
+vector2 ConvexHull2D::conv(const vector2 &pts, Algo alg, int h) {
+	switch (alg) {
+	case GRAHAMS:
+		return GrahamsConv2d(pts);
+		break;
+	case JARVIS:
+		return JarvisConv2d(pts);
+		break;
+	case CHANS:
+		return ShatteringConv2d(pts, h);
+		break;
+	default:
+		return GrahamsConv2d(pts);
+	}
+}
 
 
 /** Returns the indices of input vertices in clockwise order which form the convex hull.
@@ -85,7 +100,10 @@ vector2 ConvexHull2D::JarvisConv2d (const vector2 &pts) {
 	return conv_pts;
 }
 
+
 vector2 ConvexHull2D::ShatteringConv2d (const vector2 &pts, const int h) {
+	cout << "   >> Chan's : h = "<<h<<endl;
+
 	const int N = pts.size();
 	const int S = (int) ceil(N/((float) h));
 
@@ -133,7 +151,7 @@ vector2 ConvexHull2D::ShatteringConv2d (const vector2 &pts, const int h) {
 	Vector2f p = all_min_pt;
 	do {
 		for (int i=0; i<S; i+=1) {
-			cw_inds[i]  = cw_most(conv_hulls[i], cw_inds[i], p);
+			cw_inds[i]  = cw_most2(conv_hulls[i], cw_inds[i], p);
 			cw_mosts[i] = conv_hulls[i][cw_inds[i]];
 		}
 		Vector2f q = cw_mosts[cw_most(cw_mosts, 0, p)];
@@ -143,34 +161,51 @@ vector2 ConvexHull2D::ShatteringConv2d (const vector2 &pts, const int h) {
 		step += 1;
 	} while(step < h && !areEqual(p, all_min_pt));
 
+
 	if (!areEqual(p, all_min_pt)) {
+		cout << "     -- recursing with : h = "<<h*h<<endl;
 		return ShatteringConv2d (pts, h*h);
 	} else {
+		cout << "     -- returning with : h = "<<h<<endl;
 		return conv_pts;
 	}
 }
 
 
 
+/** Find the cw most point in pts wrt pt. Starting at index s, going up to N.*/
+int ConvexHull2D::cw_most2(const vector2 &pts, const int s, const Vector2f &pt) {
+
+	const int N = pts.size();
+	if (N==1) return 0;
+
+	int i = s;
+	while(pts[i]==pt && in_range(i,s,0,N)) {i = mod(i+1,N);}
+
+	while(in_range(i,s,0,N)) {
+		if (ccw(pt, pts[mod(i+1,N)], pts[i])) {
+			i = mod(i+1,N);
+		} else {
+			break;
+		}
+	}
+	return i;
+}
+
+
+/** CW-most tests which just goes over all points and returns the cw most wrt pt. */
 int ConvexHull2D::cw_most(const vector2 &pts, int start, const Vector2f &pt) {
 
-	if (pts.size()==1)
-		return 0;
+	const int N = pts.size();
+	if (N==1) return 0;
 
-	EqComparator eq(2);
+	int p = lexicoMin(pts);
+	while (pt==pts[p]) {p = (p+1)%N;}
 
-	int p = start;
-	while(eq(pt, pts[p])) {
-		p = (p==pts.size()-1)? 0: p+1;
+	for (int r=0; r < N; r+=1) {
+		if (r==p || pts[r]==pt) continue;
+		if (ccw(pt, pts[r], pts[p]))
+			p = r;
 	}
-
-	do {
-		int q = (p==pts.size()-1)? 0: p+1;
-
-		if (ccw(pt, pts[q], pts[p])) {
-			p = q;
-		} else {
-			break;}
-	} while(p!=start);
 	return p;
 }
