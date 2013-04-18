@@ -42,7 +42,6 @@ public:
 		CHANS
 	};
 
-
 	/** Use various algorithms to compute 2d convex hulls.
 	 *  H is the initial number of sub-hulls in Chan's shattering algo.*/
 	vector2 conv(const vector2 &pts, Algo alg, int h=2);
