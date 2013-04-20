@@ -14,6 +14,7 @@ bool Comparator::operator() (const VectorXf &v1, const VectorXf &v2) const {
 	return (i==d || v1[i] < v2[i]);
 }
 
+
 /** Comparator used in sorting vectors. */
 bool EqComparator::operator() (const VectorXf &v1, const VectorXf &v2) const {
 	int i = 0;
