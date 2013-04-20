@@ -52,13 +52,13 @@ public:
 		using namespace std;
 		if (!Q->empty()) {
 			typename std::set<int, IndexedComparator<T, T_allocator> >::iterator it = Q->begin();
-			Q->erase(it); // remove the element from the set.
+			Q->erase(it); // remove the element from the Q.
 			return *it;
 		}
 		return -1;
 	}
 
-	/** Finds the index j, such that PTS[j] == PTS[idx] and j \in BST.*/
+	/** Finds the index j, such that PTS[j] == PTS[idx] and j \in Q.*/
 	int  find (int idx) {
 		std::set<int>::iterator it = Q->find(idx);
 		return (it  != Q->end())? *it : -1;
