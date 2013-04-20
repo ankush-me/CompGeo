@@ -36,11 +36,24 @@ public:
 	IndexedComparator(int _d, std::vector<T, T_allocator> *_pts) : d(_d), pts(_pts), N(_pts->size()) {}
 
 	bool operator() (const int &i1, const int &i2) const {
+
+
+		using namespace std;
+
+
 		int i = 0;
 		while(i < d && pts->at(i1)[i] == pts->at(i2)[i]) {i++;}
 		bool res = (i==d || pts->at(i1)[i] < pts->at(i2)[i]);
+
+		if (i1==i2) {
+			cout << pts->at(i1).transpose() << " | "<<pts->at(i2).transpose()<<endl;
+			cout << " res : "<<res<<endl;
+		}
+
+
 		return res;
 	}
+
 };
 
 

@@ -14,18 +14,29 @@
 template <class T, class T_allocator>
 class EventQ {
 
-	std::set<int, IndexedComparator<T,T_allocator> > *Q;
+	std::vector<T,T_allocator> * pts;
 	IndexedComparator<T,T_allocator> comp;
+	std::set<int, IndexedComparator<T,T_allocator> > *Q;
+
+
 
 public:
 
 	/** DIM  : the dimension of the points being stored. */
-	EventQ (std::vector<T,T_allocator> *_pts, int dim) : comp(dim, _pts) {
+	EventQ (std::vector<T,T_allocator> *_pts, int dim) : pts(_pts), comp(dim, _pts) {
 		Q  = new std::set<int, IndexedComparator<T,T_allocator> >(comp);
 	}
 
 	bool insert(const int &idx) {
+		assert(("EventQ: insert index out of range!", 0<=idx && idx < pts->size()));
 		std::pair<std::set<int>::iterator, bool> ret = Q->insert(idx);
+		return ret.second;
+	}
+
+
+	// inserts the last point in PTS into the internal binary tree.
+	bool insertLast() {
+		std::pair<std::set<int>::iterator, bool> ret = Q->insert(pts->size()-1);
 		return ret.second;
 	}
 
