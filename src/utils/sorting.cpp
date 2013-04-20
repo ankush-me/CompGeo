@@ -7,11 +7,11 @@ using namespace Eigen;
 using namespace std;
 
 
-/** Comparator used in sorting vectors. */
+/** Comparator used in sorting vectors. Implements v1<v2 (LESS THAN).*/
 bool Comparator::operator() (const VectorXf &v1, const VectorXf &v2) const {
 	int i = 0;
 	while(i < d && v1[i] == v2[i]) {i++;}
-	return (i==d || v1[i] < v2[i]);
+	return (i==d)? false :  v1[i] < v2[i];
 }
 
 
