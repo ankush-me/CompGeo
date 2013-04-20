@@ -25,10 +25,8 @@ int main (int argc, char* argv[]) {
 	verts.push_back(Vector2f(0,0));
 	eq.insert(verts.size()-1);
 
-
 	bool insert = eq.insertLast();
 	cout << "Illegal insert. Did insert? : "<<(insert?"True": "False")<<endl;
-
 
 	cout << "Removing min [should be in order] ..."<<endl;
 	while (!eq.empty()) {
