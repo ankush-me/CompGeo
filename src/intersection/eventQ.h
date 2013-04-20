@@ -37,7 +37,7 @@ public:
 
 	/** Inserts the last point in PTS into the internal binary tree.
 	/*  Returns true if the index of the point was successfully inserted.
-	 *  Returns false if a point will the same coordinate already exists.*/
+	 *  Returns false if a point with the same coordinates already exists.*/
 	bool insertLast() {
 		std::pair<std::set<int>::iterator, bool> ret = Q->insert(pts->size()-1);
 		return ret.second;
