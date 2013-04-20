@@ -36,6 +36,42 @@ struct EqComparator : std::binary_function <Eigen::VectorXf, Eigen::VectorXf, bo
 };
 
 
+/** Templatized comparator for lexicographic less-than test.
+ *  The comparisons are made of the indices based on the points stores in PTS.*/
+template <typename T, typename T_allocator>
+struct IndexedComparator : std::binary_function <int, int, bool> {
+private:
+
+public:
+	int d; // dimensions of the vector
+	std::vector<T, T_allocator> * pts;
+	int N;
+
+	IndexedComparator(int _d, std::vector<T, T_allocator> *_pts) : d(_d), pts(_pts), N(_pts->size()) {}
+
+	bool operator() (const int &i1, const int &i2) const {
+
+
+		using namespace std;
+
+
+		int i = 0;
+		while(i < d && pts->at(i1)[i] == pts->at(i2)[i]) {i++;}
+		bool res = (i==d || pts->at(i1)[i] < pts->at(i2)[i]);
+
+		if (i1==i2) {
+			cout << pts->at(i1).transpose() << " | "<<pts->at(i2).transpose()<<endl;
+			cout << " res : "<<res<<endl;
+		}
+
+
+		return res;
+	}
+
+};
+
+
+
 /** Sort a matrix NxD (N points in D dimensions) lexicographically. In-place. */
 void lexicoSort(Eigen::MatrixXf &mat_nd);
 
@@ -47,7 +83,7 @@ void lexicoSort(std::vector<Eigen::Matrix<T, R,C,  _Options, _MaxRows, _MaxCols>
 /** Sort a vector of points lexicographically. In-place. Redefined for aligned-vectors.*/
 template <typename T, int R, int C, int _Options, int _MaxRows, int _MaxCols>
 void lexicoSort(std::vector<Eigen::Matrix<T, R, C, _Options, _MaxRows, _MaxCols>,
-		          Eigen::aligned_allocator<Eigen::Matrix<T, R, C, _Options, _MaxRows, _MaxCols> > >& mat_nd);
+		Eigen::aligned_allocator<Eigen::Matrix<T, R, C, _Options, _MaxRows, _MaxCols> > >& mat_nd);
 
 
 
@@ -59,7 +95,7 @@ int lexicoMin(const std::vector<Eigen::Matrix<T, R,C,  _Options, _MaxRows, _MaxC
 
 template <typename T, int R, int C, int _Options, int _MaxRows, int _MaxCols>
 int lexicoMin(const std::vector<Eigen::Matrix<T, R, C, _Options, _MaxRows, _MaxCols>,
-		          Eigen::aligned_allocator<Eigen::Matrix<T, R, C, _Options, _MaxRows, _MaxCols> > >& mat_nd);
+		Eigen::aligned_allocator<Eigen::Matrix<T, R, C, _Options, _MaxRows, _MaxCols> > >& mat_nd);
 
 
 
@@ -71,6 +107,6 @@ int lexicoMax(const std::vector<Eigen::Matrix<T, R,C,  _Options, _MaxRows, _MaxC
 
 template <typename T, int R, int C, int _Options, int _MaxRows, int _MaxCols>
 int lexicoMax(const std::vector<Eigen::Matrix<T, R, C, _Options, _MaxRows, _MaxCols>,
-		          Eigen::aligned_allocator<Eigen::Matrix<T, R, C, _Options, _MaxRows, _MaxCols> > >& mat_nd);
+		Eigen::aligned_allocator<Eigen::Matrix<T, R, C, _Options, _MaxRows, _MaxCols> > >& mat_nd);
 
 

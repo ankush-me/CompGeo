@@ -5,3 +5,6 @@ add_executable(test_bst test_bst.cpp)
 
 add_executable(test_comparator test_ind_comparator.cpp)
 target_link_libraries(test_comparator  utils)
+
+add_executable(test_eventQ test_eventQ.cpp)
+target_link_libraries(test_eventQ utils)
