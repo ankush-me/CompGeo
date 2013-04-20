@@ -1,6 +1,5 @@
-/*
- * Defines aligned std::vector types for fixed-size eigen stuff.
- * Read: http://eigen.tuxfamily.org/dox/TopicStlContainers.html  */
+/** Defines aligned std::vector types for fixed-size eigen stuff.
+ *  Read: http://eigen.tuxfamily.org/dox/TopicStlContainers.html  */
 
 #ifndef __ALIGNEDVECTOR__
 #define __ALIGNEDVECTOR__

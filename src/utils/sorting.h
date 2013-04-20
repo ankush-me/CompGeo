@@ -74,7 +74,7 @@ void lexicoSort(std::vector<Eigen::Matrix<T, R, C, _Options, _MaxRows, _MaxCols>
 
 
 
-/** Returns the index of the lexicographically minimum point in a list of points.*/
+/** Returns the index of the lexicographically MINIMUM point in a list of points.*/
 int lexicoMin(const Eigen::MatrixXf &mat_nd);
 
 template <typename T, int R, int C, int _Options, int _MaxRows, int _MaxCols>
@@ -86,7 +86,7 @@ int lexicoMin(const std::vector<Eigen::Matrix<T, R, C, _Options, _MaxRows, _MaxC
 
 
 
-/** Returns the index of the lexicographically maximum point in a list of points.*/
+/** Returns the index of the lexicographically MAXIMUM point in a list of points.*/
 int lexicoMax(const Eigen::MatrixXf &mat_nd);
 
 template <typename T, int R, int C, int _Options, int _MaxRows, int _MaxCols>
