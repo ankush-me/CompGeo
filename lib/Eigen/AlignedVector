@@ -16,9 +16,9 @@ typedef  Eigen::aligned_allocator<Eigen::Vector4f>   allocator4f;
 typedef  std::allocator<Eigen::VectorXf>             allocatorXf;
 
 /** aligned vector types. */
-typedef  std::vector<Eigen::Vector2f, allocator2f > vector2;
-typedef  std::vector<Eigen::Vector3f> vector3;
-typedef  std::vector<Eigen::Vector4f, allocator4f > vector4;
-
+typedef  std::vector<Eigen::Vector2f, allocator2f> vector2;
+typedef  std::vector<Eigen::Vector3f, allocator3f> vector3;
+typedef  std::vector<Eigen::Vector4f, allocator4f> vector4;
+typedef  std::vector<Eigen::VectorXf, allocatorXf> vectorX;
 
 #endif /* __ALIGNEDVECTOR__ */

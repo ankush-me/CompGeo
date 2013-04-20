@@ -1,4 +1,4 @@
-/** Data structure based on std::set for holding sweep-line events. */
+/** Data structure based on std::set for holding points in sorted order.. */
 
 #ifndef __EVENTQ_H__
 #define __EVENTQ_H__
@@ -63,7 +63,6 @@ public:
 		std::set<int>::iterator it = Q->find(idx);
 		return (it  != Q->end())? *it : -1;
 	}
-
 
 	bool empty() {
 		return Q->empty();
