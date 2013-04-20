@@ -18,8 +18,6 @@ class EventQ {
 	IndexedComparator<T,T_allocator> comp;
 	std::set<int, IndexedComparator<T,T_allocator> > *Q;
 
-
-
 public:
 
 	/** DIM  : the dimension of the points being stored. */
@@ -27,6 +25,9 @@ public:
 		Q  = new std::set<int, IndexedComparator<T,T_allocator> >(comp);
 	}
 
+
+	/** Returns true if the index of the point was successfully inserted.
+	 *  Returns false if a point will the same coordinate already exists.*/
 	bool insert(const int &idx) {
 		assert(("EventQ: insert index out of range!", 0<=idx && idx < pts->size()));
 		std::pair<std::set<int>::iterator, bool> ret = Q->insert(idx);
@@ -34,7 +35,9 @@ public:
 	}
 
 
-	// inserts the last point in PTS into the internal binary tree.
+	/** inserts the last point in PTS into the internal binary tree.
+	/*  Returns true if the index of the point was successfully inserted.
+	 *  Returns false if a point will the same coordinate already exists.*/
 	bool insertLast() {
 		std::pair<std::set<int>::iterator, bool> ret = Q->insert(pts->size()-1);
 		return ret.second;
@@ -44,6 +47,7 @@ public:
 		Q->erase(idx);
 	}
 
+	/** Returns the index of the lexicographically min pt in PTS. */
 	int  removeMin () {
 		using namespace std;
 		if (!Q->empty()) {
@@ -53,6 +57,13 @@ public:
 		}
 		return -1;
 	}
+
+	/** Finds the index j, such that PTS[j] == PTS[idx] and j \in BST.*/
+	int  find (int idx) {
+		std::set<int>::iterator it = Q->find(idx);
+		return (it  != Q->end())? *it : -1;
+	}
+
 
 	bool empty() {
 		return Q->empty();
