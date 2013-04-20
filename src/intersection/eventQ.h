@@ -3,7 +3,6 @@
 #ifndef __EVENTQ_H__
 #define __EVENTQ_H__
 
-
 #include <set>
 #include <vector>
 #include "utils/sorting.h"
@@ -15,34 +14,37 @@
 template <class T, class T_allocator>
 class EventQ {
 
-	std::set<int, IndexedComparator<T,T_allocator> > Q;
+	std::set<int, IndexedComparator<T,T_allocator> > *Q;
 	IndexedComparator<T,T_allocator> comp;
 
 public:
 
 	/** DIM  : the dimension of the points being stored. */
-	EventQ (std::vector<T,T_allocator> *_pts, int dim) : comp(dim, _pts), Q(comp) {}
+	EventQ (std::vector<T,T_allocator> *_pts, int dim) : comp(dim, _pts) {
+		Q  = new std::set<int, IndexedComparator<T,T_allocator> >(comp);
+	}
 
 	bool insert(const int &idx) {
-		std::pair<std::set<int>::iterator, bool> ret = Q.insert(idx);
+		std::pair<std::set<int>::iterator, bool> ret = Q->insert(idx);
 		return ret.second;
 	}
 
 	void erase(const int &idx) {
-		Q.erase(idx);
+		Q->erase(idx);
 	}
 
-	int removeMin () {
-		if (!Q.empty()) {
-			typename std::set<int, IndexedComparator<T, T_allocator> >::iterator it = Q.begin();
-			Q.erase(*it); // remove the element from the set.
+	int  removeMin () {
+		using namespace std;
+		if (!Q->empty()) {
+			typename std::set<int, IndexedComparator<T, T_allocator> >::iterator it = Q->begin();
+			Q->erase(it); // remove the element from the set.
 			return *it;
 		}
 		return -1;
 	}
 
 	bool empty() {
-		return Q.empty();
+		return Q->empty();
 	}
 
 };

@@ -27,29 +27,20 @@ struct EqComparator : std::binary_function <Eigen::VectorXf, Eigen::VectorXf, bo
 template <typename T, typename T_allocator>
 struct IndexedComparator : std::binary_function <int, int, bool> {
 private:
-	int d; // dimensions of the vector
-	std::vector<T, T_allocator> * pts;
-	const int N;
 
 public:
-	IndexedComparator(int _d, std::vector<T, T_allocator> *_pts) : d(_d), pts(_pts), N(_pts->size()) {
-		std::cout << " size: "<<N<<std::endl;
-	}
+	int d; // dimensions of the vector
+	std::vector<T, T_allocator> * pts;
+	int N;
 
-	void setPts(std::vector<T, T_allocator> * _pts) {
-		pts = _pts;
-		N   = pts->size();
-	}
+	IndexedComparator(int _d, std::vector<T, T_allocator> *_pts) : d(_d), pts(_pts), N(_pts->size()) {}
 
 	bool operator() (const int &i1, const int &i2) const {
-		std::cout <<" compare: " << i1 << " | " << i2 << " | size: " << pts->size() << std::endl;
-		assert(("IndexedComparator: Indices out of range!", 0<=i1 && i1<N &&  0<=i2 && i2<N ));
-
 		int i = 0;
 		while(i < d && pts->at(i1)[i] == pts->at(i2)[i]) {i++;}
-		return (i==d || pts->at(i1)[i] < pts->at(i2)[i]);
+		bool res = (i==d || pts->at(i1)[i] < pts->at(i2)[i]);
+		return res;
 	}
-
 };
 
 

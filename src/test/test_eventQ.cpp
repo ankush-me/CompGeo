@@ -16,13 +16,14 @@ int main (int argc, char* argv[]) {
 	for (int i = 0 ; i < N; i+=1) {
 		verts[i] = randm.row(i);
 	}
-
+	cout << "instaintiating an event q"<<endl;
 	EventQ<Vector2f, allocator2f> eq(&verts, 2);
 
 	for (int i=0; i <N; i ++) {
-		cout <<" inserting : "<< verts.size()<<endl;
 		eq.insert(i);
 	}
+	verts.push_back(Vector2f(0,0));
+	eq.insert(verts.size()-1);
 
 
 	cout << "Removing min [should be in order] ..."<<endl;
