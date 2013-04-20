@@ -35,7 +35,7 @@ public:
 	}
 
 
-	/** inserts the last point in PTS into the internal binary tree.
+	/** Inserts the last point in PTS into the internal binary tree.
 	/*  Returns true if the index of the point was successfully inserted.
 	 *  Returns false if a point will the same coordinate already exists.*/
 	bool insertLast() {
