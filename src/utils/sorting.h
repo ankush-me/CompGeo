@@ -14,20 +14,6 @@ struct Comparator : std::binary_function <Eigen::VectorXf, Eigen::VectorXf, bool
 };
 
 
-template <typename T, typename T_allocator>
-struct IndComparator : std::binary_function <int, int, bool> {
-	int d; // dimensions of the vector
-	std::vector<T, T_allocator> * pts;
-	IndComparator(int _d ) : d(_d) {}
-
-	bool operator() (const int &i1, const int &i2) const {
-		int i = 0;
-		while(i < d && pts->at(i1)[i] == pts->at(i2)[i]) {i++;}
-		return (i==d || pts->at(i1)[i] < pts->at(i2)[i]);
-	}
-};
-
-
 struct EqComparator : std::binary_function <Eigen::VectorXf, Eigen::VectorXf, bool> {
 	int d; // dimensions of the vector
 	EqComparator(int _d) : d(_d) {}
